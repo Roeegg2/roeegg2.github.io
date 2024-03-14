@@ -7,11 +7,11 @@ The CPU, the PPU, the APU (which is technically part of the CPU), Cartridge & Ma
 
 For explanation of the CPU of the NES checkout:
 
-- [CPU](https://roeegg2.github.io/nes-internals-blog/cpu)
+- [CPU](https://roeegg2.github.io/cpu)
 
 For explanation of the background graphics rendering of the NES checkout:
 
-- [PPU](https://roeegg2.github.io/nes-internals-blog/ppu)
+- [PPU](https://roeegg2.github.io/ppu)
 
 
 I do plan to write about the rest of the components as well in the future.
