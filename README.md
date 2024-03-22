@@ -5,14 +5,12 @@ In this blog/series I will try to give an introduction to the NES architecture, 
 The NES has 4 major components:
 The CPU, the PPU, the APU (which is technically part of the CPU), Cartridge & Mappers, and the Main Bus
 
-For explanation of the CPU of the NES checkout:
-
 - [CPU](https://roeegg2.github.io/cpu)
-
-For explanation of the background graphics rendering of the NES checkout:
 
 - [PPU](https://roeegg2.github.io/ppu)
 
+** STILL A WORK IN PROGRESS
+- [Cartridge & Mappers](https://roeegg2.github.io/cartridge_n_mappers)
 
 I do plan to write about the rest of the components as well in the future.
 

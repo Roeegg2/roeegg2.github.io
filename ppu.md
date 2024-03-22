@@ -9,11 +9,9 @@ In this writeup I will give a simple yet broad overview over the PPU.
 First, if you haven't read the CPU writeup yet I highly recommend you go check that writeup first, as I'm building on top of stuff presented there. You can check it out [here](https://roeegg2.github.io/nes-internals-blog/cpu)
 
 When I started learning how the NES PPU works, one of the things that were very difficult for me was that my mindset was that things are done in the simplest most elegant and logical way.
-If you have the same mindset, please take that mindset and throw in a garbage can.
+If you think the same, please yank that mindset into some garbage can, because that's not the case here! 
 
-Although there is definitely logic in the way the PPU is working, the PPU is complicated, and its internals and the way it works are often very awkward, simply because this was (probably) the cheapest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo used here to try and squeeze the most out of the PPU's hardware.
-
-So please take that in mind as you are reading this guide. I will try to explain the reasoning behind each thing here, but at the end of the day - there isn't really a satisfying deep answer to why things are made the way they were.
+Although there is definitely logic in the way the PPU is working, the PPU is somewhat complicated. It's internals and the way some components work is very awkward, simply because this was the cheapest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo used here to try and squeeze the most out of the PPU's hardware.
 
 ## Terminology
 
@@ -38,16 +36,16 @@ So please take that in mind as you are reading this guide. I will try to explain
 ## Part 1 - Getting a mental image on what rendering looks like
 
 At a fundamental level, the PPU goes over each pixel and sets its color, using certain information we will look at later on.
-Here's a simple psuedo-code that shows very simple what the PPU does:
+Here's a simple psuedo-code that shows in a very abstracted way what the PPU is doing:
 
 ```psuedo
-for each line:
+for each line on screen:
     for each pixel in that line:
         set pixel color
 ```
 
-The PPU goes over 26 scanlines, each one of them consists of 340 cycles.
-each cycle between 1 and 256, it renders a pixel. `256-1 = 255` pixels each scanline.
+The PPU goes over 261 scanlines, each one of them consists of 340 cycles.
+each cycle between 1 and 256, it renders a pixel. `256-1 = 255` pixels total each scanline.
 
 ```psuedo
 scanline 0 <- first cycle of the visible scanlines
@@ -76,15 +74,29 @@ Why are there such scanlines? Well for a couple of reasons. When we go over thes
 
 ### Vertical blank (vblank) scanlines
 
-These scanlines is not visible. During these scanlines the CPU can write data to VRAM to set the data for the next frame.
-During this scanline, the PPU does essensially nothing. (except setting up some flags, we will see what flags and when later on)
-The purpose of this scanline is to let the CPU fill up the data needed for rendering for the next frame. (and so this also explain why nothing is shown here - the whole purpose of these scanlines is not rendering - these scanlines are needed so the CPU has a "window" where it can update data in vram for the next frame without the PPU reading from it, and by accident rendering wrong uncomplete data)
+These scanlines are not visible - meaning nothing is getting rendered on the screen. 
+During this scanline, the PPU does essentially nothing. (except setting up some flags, we will see what flags and when later on)
+During these scanlines the CPU can write data to VRAM to setup new data for the PPU to render next frame.
+
+```
+NOTE:
+This also explain why nothing is displayed during these scanlines - the whole point of having these scanlines is to have a time window where the PPU isn't rendering or reading rendering data so the CPU can safely update the data for the next frame.
+
+The CPU **must** access VRAM and internal registers to set stuff for the next frame. (otherwise we would just get a single constant picture to render).
+If we didnt have these scanlines, the PPU would read while the CPU is still updating data, and so the PPU would read garbage data from VRAM and the internal registers, which would result in a glitchy unwanted picture.  
+```
 
 ### Pre-render scanline
 
 These scanlines are also not visible. Other than that, they are very similar to the visible scanlines. (with some other small changes)
-As can be inferred from their name, their purpose is to prepare the visible scanlines to rendering.
-(and so this also explain why nothing is shown here - the whole purpose of these scanlines is not rendering - this scanline is needed so the PPU can get the new data to render for the next scanline, scanline 1 (we will see later how and why))
+As can be inferred from it's name, it's purpose is to prepare the data for the visible scanlines to render.
+
+```
+NOTE:
+This also explain why nothing is displayed during this scanline - after the CPU updated the data, the PPU needs to make some internal fetches for the next scanline - the first visible scanline.
+```
+
+I know this isn't really tangible yet and hard to understand, but things will hopefully make sense later on. Just keep what I said in mind, and if you need a reminder, you can always jump back and read this section again. 
 
 ### In conclusion
 
