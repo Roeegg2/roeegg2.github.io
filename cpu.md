@@ -5,8 +5,8 @@
 ## Introduction
 
 The NES has a slightly modified MOS 6502 CPU.
-This CPU was quite popular back in the day, so there is plenty of detailed documentation out there.
-I will provide a basic explanation of how it works in this writeup.
+This CPU was quite popular back in the day, so there is plenty of detailed documentation out there, but 
+I will provide here a basic explanation of how it works.
 
 ## Terminology
 
@@ -27,7 +27,7 @@ There isn't really any fancy emulation/NES terminology used here, just computer 
 At the end of the day, CPU is just a component which receives some data, does some calculations, and outputs some data.
 The CPU is composed of ALU, Registers, and a clock
 
-It does the following cycle:
+Roughly, each cycle the CPU does one of these operations:
 
 1. Fetch - fetch an instruction
 2. Decode - figure out what that instruction does
@@ -41,9 +41,10 @@ opcode operand1 operand2 opcode opcode operand1 ... etc
 
 An opcode is a number unique to each operation the CPU perform, so the CPU knows what it should should do, and how to get the data used by that instruction. Similar instructions could have the different opcodes, because they uses different addressing modes.
 
-**Operands**, are data that this specific instruction needs. Similar to function arguments in high level languages such as C, Java, Python, etc.
+**Operands**, are data that the operation needs as parameters. Somewhat similar to function arguments in high level languages such as C, Java, Python, etc.
+Each operation's operand number range from 0 (the minimum amount) to 2 (the maximum amount)
 
-An a addressing mode, dictates a certain way the CPU should get the data in the operands.
+An a addressing mode, dictates a certain way the CPU should get and treat the data in the operands.
 
 Let's take for example the following code snippet:
 
@@ -68,8 +69,8 @@ the `02` is `sta`s second operand.
 
 (The reason the data 200 is stored reversed, as 00 02 is because the 6502 is little endian. Look up online what this means)
 
-As I said before, **Addresing Modes** are the way the CPU interprets the operands of the instructions.
-As we have seen above, operands on different instructions have different meaning.
+As I said before, an addressing mode is the way the CPU interprets the operands of the instruction.
+As we have seen above, operands on different operations have different meaning.
 In our example, the `lda` instruction used `11` as a hex-form number that should be loaded to A as is. Without addressing modes, the CPU could have also interpreted `11` as a decimal-form number, that should be used as an address from which data should fetched and stored in A.
 These 2 interpretations have very different meanings.
 So how does the CPU knows how it should use that data? The answer is addressing modes.

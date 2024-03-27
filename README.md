@@ -9,7 +9,6 @@ The CPU, the PPU, the APU (which is technically part of the CPU), Cartridge & Ma
 
 - [PPU](https://roeegg2.github.io/ppu)
 
-** STILL A WORK IN PROGRESS
 - [Cartridge & Mappers](https://roeegg2.github.io/cartridge_n_mappers)
 
 I do plan to write about the rest of the components as well in the future.
