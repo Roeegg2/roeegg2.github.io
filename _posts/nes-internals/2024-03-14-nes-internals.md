@@ -2,7 +2,7 @@
 layout: post
 title: Introduction
 series: NES Internals Series
-part: 0
+chapter: 0
 date: 2024-03-14 15:13:25 +0300
 permalink: /nes-internals
 ---

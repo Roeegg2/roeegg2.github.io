@@ -2,7 +2,7 @@
 layout: post
 title: The Game Cartrdige & Mappers 
 series: NES Internals Series
-part: 3
+chapter: 3
 date: 2024-04-22 15:13:25 +0300
 permalink: /nes-internals/cart-and-mappers
 ---
