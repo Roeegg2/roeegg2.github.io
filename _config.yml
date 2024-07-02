@@ -21,13 +21,13 @@
 title: Roee Toledano blog
 email: roeegg22@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  This is a simple blog in which I post and write about things I've learned and thought others would also find it interesting
+  Nothing
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://roeegg2.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  jekyll
 
 # Build settings
-theme: minima
+theme: minima-dark
 plugins:
   - jekyll-feed
 
