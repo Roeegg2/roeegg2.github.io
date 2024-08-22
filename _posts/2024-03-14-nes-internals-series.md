@@ -4,7 +4,7 @@ title: NES Internals Series
 series: NES Internals Series
 chapter: 0
 date: 2024-03-14 15:13:25 +0300
-permalink: /nes-internals
+permalink: /nes-internals-series
 author: Roee Toledano
 ---
 

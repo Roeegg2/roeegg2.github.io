@@ -4,7 +4,7 @@ title: PPU Background Rendering
 series: NES Internals Series
 chapter: 2
 date: 2024-04-06 15:13:25 +0300
-permalink: /nes-internals/ppu-background
+permalink: /nes-internals/chapter-2
 author: Roee Toledano
 ---
 
