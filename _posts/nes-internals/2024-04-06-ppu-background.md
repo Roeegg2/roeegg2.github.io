@@ -4,18 +4,21 @@ title: PPU Background Rendering
 series: NES Internals Series
 chapter: 2
 date: 2024-04-06 15:13:25 +0300
-permalink: /nes-internals/chapter-2
+permalink: nes-internals-series/chapter-2
 author: Roee Toledano
 ---
 
 ## Prologue
 
-First, if you haven't read the CPU writeup yet I highly recommend you go check that writeup first, as I'm building on top of stuff presented there. You can check it out [here](https://roeegg2.github.io/nes-internals-blog/cpu)
+If you haven't read the CPU writeup yet I highly recommend you go check that writeup first, as I'm building on top of stuff presented there. You can check it out [here](https://roeegg2.github.io/nes-internals-blog/cpu)
 
 When I started learning how the NES PPU works, one of the things that were very difficult for me was that my mindset was that things are done in the simplest most elegant and logical way.
-If you think the same, please yank that mindset into some garbage can, because that's not the case here!
+If you think the same, please yeet that mindset into a garbage can, because that's not the case here!
 
-Although there is definitely logic in the way the PPU is working, the PPU is somewhat complicated. It's internals and the way some components work is very awkward, simply because this was the cheapest/easiest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo used here to try and squeeze the most out of the PPU's hardware.
+Although there is definitely logic in the way the PPU is working,
+It's internals and the way some components work is very awkward - simply because this was the
+cheapest/easiest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo
+used here to try and squeeze the most out of the PPU's hardware.
 
 ## Terminology
 
@@ -23,20 +26,29 @@ Although there is definitely logic in the way the PPU is working, the PPU is som
 
 - **scanline** - the current line the PPU is currently rendering at (the "y" value)
 
-- **dot/cycle** - the cycle the PPU is at, counting from the start of the scanline. So each new scanline, this value gets reset to 0. The "x" value of a pixel (calculated using `current cycle - 1`, since cycle 0 is idle)
+- **dot/cycle** - the current cycle of the PPU, counting from the start of the scanline. So each new scanline,
+this value gets reset to 0. The "x" value of a pixel (calculated using `current cycle - 1`, since cycle
+0 is idle)
 
-- **VRAM** - short for video memory. This is a volatile area of storage (unlike game ROMS) **inside the NES** (important to remember for later on when we get into mappers) where information used to determine the color of each pixel is stored. (in a nutshell, its like the CPU's ram, but for the PPU).
+- **VRAM** - short for video memory. This is a volatile area of storage (unlike game ROMS) **inside the NES**
+(important to remember for later on when we get into mappers) where information used to determine the color of
+each pixel is stored. (in a nutshell, its like the CPU's ram, but for the PPU).
 
 **for Part 2:**
 
 - **Tile** - a unit used to logically divide the NES screen. Each tile is a square of 8x8 _pixels_.
 
-- **Block** - a unit used to logically divide the NES screen. Each block is a square of 2x2 _tiles_ (or 16x16 _pixels_)
+- **Block** - a unit used to logically divide the NES screen. Each block is a square of 2x2 _tiles_
+(or 16x16 _pixels_)
 
-- **Quadrant** - (yet another unit) used to logically divide the NES screen. Each quadrant is a square of 2x2 _blocks_, which are 4x4 _tiles_ (or 32x32 _pixels_)
+- **Quadrant** - (yet another unit) used to logically divide the NES screen. Each quadrant is a square of
+2x2 _blocks_, which are 4x4 _tiles_ (or 32x32 _pixels_)
 
 - **Sprite** - a name given to a piece of data to be rendered.
-    > **_NOTE:_** This includes both background (the ground, the sky, mario super block, etc) and foreground (mostly characters and special effects). This is a different definition that _character/foreground sprite_ which is **kind of a sprite**, used to represent a foreground piece of rendering data
+    > **_NOTE:_** This includes both background (the ground, the sky, mario super block, etc) and
+    foreground (mostly characters and special effects). This is a different definition that
+    _character/foreground sprite_ which is **kind of a sprite**, used to represent a foreground piece of
+    rendering data
 
 ## Part 1 - Getting a mental image on what rendering looks like
 
@@ -506,9 +518,5 @@ lda #$5E (%01011110)
 sta $2005
 ```
 
-That is probably one of more complicated aspects of the PPU which might take some time to fully understand, so don't get fustraited :)
-
-## The End
-
-I hope this writeup helped you and gave you this mental image of how the PPU works at the basic level. From here I think It'll be much easier to dwell deeper into the PPUs functioning.
-I recommend reading the NESdev wiki. It contains pretty much everything you need to know about the NES, both as a game programmer and as an emudev.
+That is probably one of most complicated aspects of the PPU, and a crucial one so make sure you
+understand it well.

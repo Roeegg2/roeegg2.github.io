@@ -15,15 +15,15 @@ In this blog/series I will try to give an introduction to the NES architecture, 
 The NES has 4 major components:
 The _CPU_, the _PPU_, the _APU_, _Cartridge & Mappers_, and the _Main Bus_.
 
-- [**CPU** - Chapter 1](/nes-internals/cpu)
+- [**CPU** - Chapter 1](/nes-internals/chapter-1)
 
-- [**PPU Background** - Chapter 2](/nes-internals/ppu-background)
+- [**PPU Background** - Chapter 2](/nes-internals/chapter-2)
 
-- [**PPU Foreground** - Chapter 3](/nes-internals/ppu-foreground)
+- [**PPU Foreground** - Chapter 3](/nes-internals/chapter-3)
 
-- [**Cartridge & Mappers** - Chapter 4](/nes-internals/cart-and-mappers)
+- [**Cartridge & Mappers** - Chapter 4](/nes-internals/chapter-4)
 
-- [**Controls** - Chapter 5](/nes-internals/controls)
+- [**Controls** - Chapter 5](/nes-internals/chapter-5)
 
 I do plan to write about the rest of the components as well in the future.
 
