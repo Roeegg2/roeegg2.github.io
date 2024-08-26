@@ -13,9 +13,9 @@ layout: base
     <!-- list series -->
     <h1 class="post-list-heading">Series:</h1>
     <ul class="post-list">
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y"
-        -%} {%- for post in posts -%} {%- if post.chapter and post.chapter == 0
-        -%}
+        {%- assign date_format = site.minima.date_format | default: "%b %-d,
+        %Y"-%} {%- for post in posts -%} {%- if post.chapter and post.chapter ==
+        0-%}
         <li>
             <span class="post-meta">{{ post.date | date: date_format }}</span>
             <h3>
