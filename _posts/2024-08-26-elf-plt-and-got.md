@@ -16,9 +16,9 @@ Any assembly here will be x86_64, Intel syntax, but it's the same jist for diffe
 
 The PLT, GOT and GOT.PLT are all sections in an ELF file.
 
-The PLT is a table of entries, each entry being a very short code snippet (often times called _stub_).
-The GOT is also a table of entries, each entry being a an address to some symbol (could be function, global variable, etc).
-The GOT.PLT is a sub-table the GOT table. The PLT's GOT.
+- The PLT is a table of entries, each entry being a very short code snippet (often times called _stub_).
+- The GOT is also a table of entries, each entry being a an address to some symbol (could be function, global variable, etc).
+- The GOT.PLT is a sub-table the GOT table. The PLT's GOT.
 
 When we call a function, we usually use `call <address of function we want to call>`.
 After the instruction is executed the CPU pushes `RIP` to the stack and jumps to the specified address.

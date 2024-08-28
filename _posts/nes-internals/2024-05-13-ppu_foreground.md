@@ -4,7 +4,7 @@ title: The PPU Foreground Rendering
 series: NES Internals Series
 chapter: 3
 date: 2024-05-13 15:13:25 +0300
-permalink: nes-internals-series/chapter-5
+permalink: nes-internals-series/chapter-3
 author: Roee Toledano
 ---
 
