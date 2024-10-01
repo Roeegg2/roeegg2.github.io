@@ -130,14 +130,61 @@ $$ tlssizeS = tlsoffsetM + tlssizeM $$
   2. That TLS block is allocated on program startup - so static TLS model is used.
   3. Since there is only a single TLS image, the offsets of the variables can be used as is. (no need for `modid`)
 
-## My own important notes:
+## TLS Access models (specifically for 0x86_64):
+
+- Whilst regular symbol relocations result in some address, TLS symbol relocatoins should result in a `modid` and an offset in the TLS image.
+
+- Since it is discouraged to modify `.text`, references to TLS variables use the GOT, and the relocation is done on the GOT entry.
+
+There are 4 models for accessing TLS variables:
+
+all implementation examples refer to the following code snippet:
+```c
+extern __thread int x;
+
+&x;
+```
+
+### General dynamic model
+
+- Most generic model, and the least efficient. 
+- This is the default model. The compiler will use a different model only when certain conditions are met, so a more efficient model is possible. 
+- Code compiled with this model can be used everywhere, and access variables defined anywhere.
+- Variable offset and `modid` are not known, they are decided by the dynamic linker at runtime. They are passed to `__tls_get_addr` which returns the final address of the variable.
+- Since `__tls_get_addr` is used here, we can defer the allocation of TLS blocks until needed.
+
+#### Implementation example for x86_64
+
+- `__tls_get_addr` is called with a pointer to an `tls_index` type. This type is defined as follows:
+
+```c
+typedef struct
+{
+  size_t ti_module;
+  size_t ti_offset;
+} tls_index;
+```
+
+- `R_X86_64_TLSGD` relocation instructs the linker to allocate a `tls_index` in the GOT (if the linker chooses GOT entry `n` to place this type in, `ti_module` and `ti_offset` will be placed at `GOT[n]` and `GOT[n+1]` respectively).
+
+- `R_X86_64_DTPMOD64` relocation is used by the dynamic linker to set `ti_module` to the `modid` of the variable.
+- `R_X86_64_DTPOFF64` relocation is used by the dynamic linker to set `ti_offset` to the offset of the variable in the TLS image.
+
+
+### Local dynamic model
+
+- An optimisation of the general dynamic model.
+- This model is used when the compiler knows that the variable is defined in the same module it referenced in. (for example _static global_ or _protected/hidden_ variables). This optimisation is possible because we know the _offset_ at link time. 
+- In this model passing `0` as the 
+
+## My own important notes
 
 - TLS symbols ALWAYS requires relocation - this is because the base address of the TLS block is decided by the dynamic linker at runtime.
 - Even if some modules are using dynamic TLS, it might be faster and more efficient somtimes to allocate the TLS blocks rightway, instead of doing it lazily. This is usually true when the TLS image of the module is small anyway.
 - The similar optimisation used for `DTVi` using `GENi` can be used for `DTV` as well (if your implementation holds all `DTVi` in one vector and not independently).
 
 
-## Things I myself don't understand:
+## Things I myself don't understand
 
 - Computing the thread-specific address of a TLS variable is therefore a simple oper-
 ation which can be performed by compiler-generated code which uses variant I. But it
