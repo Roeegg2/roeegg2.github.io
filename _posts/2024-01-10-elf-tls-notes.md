@@ -138,13 +138,6 @@ $$ tlssizeS = tlsoffsetM + tlssizeM $$
 
 There are 4 models for accessing TLS variables:
 
-all implementation examples refer to the following code snippet:
-```c
-extern __thread int x;
-
-&x;
-```
-
 ### General dynamic model
 
 - Most generic model, and the least efficient. 
@@ -154,6 +147,14 @@ extern __thread int x;
 - Since `__tls_get_addr` is used here, we can defer the allocation of TLS blocks until needed.
 
 #### Implementation example for x86_64
+
+Consider the following code snippet:
+
+```c
+extern __thread int x;
+
+&x;
+```
 
 - `__tls_get_addr` is called with a pointer to an `tls_index` type. This type is defined as follows:
 
@@ -175,7 +176,53 @@ typedef struct
 
 - An optimisation of the general dynamic model.
 - This model is used when the compiler knows that the variable is defined in the same module it referenced in. (for example _static global_ or _protected/hidden_ variables). This optimisation is possible because we know the _offset_ at link time. 
-- In this model passing `0` as the 
+- By passing `0` as the offset to `__tls_get_addr` we get the start of the TLS images. Then this value can be saved and easily just added to the offset of the variable to get the final address. Good compilers generate code that does this.
+
+
+#### Implementation example for x86_64
+
+Consider the following code snippet:
+
+```c
+static __thread int x1;
+static __thread int x2;
+
+&x1;
+&x2;
+```
+
+- Since in this case we already have the offsets, the only relocation required is `R_X86_64_DTPMOD64`.
+
+### Initial exec model
+
+- This is an optimisation we can use when we know that the module uses the static TLS model. In that case, the TLS block is allocated at startup, so we can easily know the `modid` and the offset of the variable. All we need to figure out in runtime is the offset from the TLS image to TP.
+
+#### Implementation example for x86_64
+
+Consider again the following code snippet:
+
+```c
+extern __thread int x;
+
+&x;
+```
+- Only relocation required is `R_X86_64_TPOFF64` it is processed by finding the symbol in the TLS image, then adding the variable offset to the offset of the image to TP, and writing it to the GOT entry (where the relocation needs to be applied).
+
+### Local exec model
+
+- This is an optimisation of the local dynamic module. This is the special case in which the module is the main executable. In this case, the `modid` is always 1, so it's TLS block is always the first one. That means we don't need to know _anything_ about the other blocks.
+
+#### Implementation example for x86_64
+
+Consider the following code snippet:
+
+```c
+static __thread int x;
+
+&x;
+```
+
+- The only relocation required is `R_X86_64_TPOFF64`. The offset of the variable is known at link time, so the only thing that needs to be done is to add the offset from TP.
 
 ## My own important notes
 
