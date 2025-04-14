@@ -1,9 +1,9 @@
 ---
-title: "The NES Internals Series: chapter 5 - The Standard Controller"
+title: "The NES Internals Series: Chapter 5 - The Standard Controller"
 series-name: "NES Internals"
 chapter: 5
-date: 2024-04-23 15:13:25 +0300
-draft: false
+date: 2023-04-23 15:13:24 +0300
+draft: true 
 tags : ["nes", "emulation", "assembly"]
 ---
 

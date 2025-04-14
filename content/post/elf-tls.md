@@ -1,12 +1,12 @@
 ---
-title: Summary of Ulrich Drepper's legendary tls.pdf
+title: Summary of Ulrich Drepper's "ELF Handling For Thread-Local Storage"
 draft: false
 date: 2024-01-10
 tags : ["elf", "glibc", "x86_64"]
 ---
 
 ## Disclaimer:
-1. The targeted audience of this document is dynamic linker & loader implementors, so important information for other tools (such as linkers and compilers) might be missing. 
+1. The targeted audience of this document are people who are writing dynamic linkers, so important information for other tools (such as linkers and compilers) might be missing. 
 
 2. This writeup is DEFINITELY not a substitute for the original document. It is highly recommended to read the original document before reading this summary. I wrote it to help me understand the document better, and to be able to reference things quickly if I forget something. It would be very hard to understand this mechanism without reading the original document first.
 
@@ -14,7 +14,7 @@ tags : ["elf", "glibc", "x86_64"]
 
 ## Terminology:
 
-- `Module` - A shared object or executable
+- `Module` - An alias for a shared object or executable
 - `modid (Module ID)` - A unique identifier for a module
 - `tid (Thread ID)` - A unique identifier for a thread
 - `TLS Image` - The data stored in the TLS segment of a module

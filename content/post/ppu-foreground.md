@@ -1,8 +1,8 @@
 ---
-title: "The NES Internals Series: chapter 3 - PPU Foreground Rendering"
+title: "The NES Internals Series: Chapter 3 - PPU Foreground Rendering"
 series-name: "NES Internals"
 chapter: 3
-date: 2024-04-13 15:13:25 +0300
+date: 2023-04-13 15:13:25 +0300
 tags : ["nes", "emulation", "assembly"]
 ---
 

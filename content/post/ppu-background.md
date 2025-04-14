@@ -1,8 +1,8 @@
 ---
-title: "The NES Internals Series: chapter 2 - PPU Background"
+title: "The NES Internals Series: Chapter 2 - PPU Background"
 series-name: "NES Internals"
 chapter: 2
-date: 2024-04-06 15:13:25 +0300
+date: 2023-04-06 15:13:25 +0300
 draft: false
 tags : ["nes", "emulation", "assembly"]
 ---
@@ -14,10 +14,8 @@ If you haven't read the CPU writeup yet I highly recommend you go check that wri
 When I started learning how the NES PPU works, one of the things that were very difficult for me was that my mindset was that things are done in the simplest most elegant and logical way.
 If you think the same, please yeet that mindset into a garbage can, because that's not the case here!
 
-Although there is definitely logic in the way the PPU is working,
-It's internals and the way some components work is very awkward - simply because this was the
-cheapest/easiest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo
-used here to try and squeeze the most out of the PPU's hardware.
+Although there is definitely logic in the way the PPU is working, it's internals and the way some components work is very awkward - simply because this was the
+cheapest/easiest option Nintendo had. Nevertheless, it definitely is cool to see the unique methods Nintendo used here to try and squeeze the most out of the PPU's hardware.
 
 ## Terminology
 
@@ -35,15 +33,15 @@ each pixel is stored. (in a nutshell, its like the CPU's ram, but for the PPU).
 
 **for Part 2:**
 
-- **Tile** - a unit used to logically divide the NES screen. Each tile is a square of 8x8 _pixels_.
+- **tile** - a unit used to logically divide the NES screen. Each tile is a square of 8x8 _pixels_.
 
-- **Block** - a unit used to logically divide the NES screen. Each block is a square of 2x2 _tiles_
+- **block** - a unit used to logically divide the NES screen. Each block is a square of 2x2 _tiles_
 (or 16x16 _pixels_)
 
-- **Quadrant** - (yet another unit) used to logically divide the NES screen. Each quadrant is a square of
+- **quadrant** - (yet another unit) used to logically divide the NES screen. Each quadrant is a square of
 2x2 _blocks_, which are 4x4 _tiles_ (or 32x32 _pixels_)
 
-- **Sprite** - a name given to a piece of data to be rendered.
+- **sprite** - a name given to a piece of data to be rendered.
     > **_NOTE:_** This includes both background (the ground, the sky, mario super block, etc) and
     foreground (mostly characters and special effects). This is a different definition that
     _character/foreground sprite_ which is **kind of a sprite**, used to represent a foreground piece of
@@ -61,7 +59,7 @@ for each line on screen:
 ```
 
 The PPU goes over 261 scanlines, each one of them consists of 340 cycles.
-each cycle between 1 and 256, it renders a pixel. `256-1 = 255` pixels total each scanline.
+Each cycle between 1 and 256, it renders a pixel. `256-1 = 255` pixels total each scanline.
 
 ```psuedo
 scanline 0 <- first cycle of the visible scanlines
@@ -90,8 +88,8 @@ Why are there such scanlines? Well for a couple of reasons. When we go over thes
 
 ### Vertical blank (vblank) scanlines
 
-These scanlines are not visible - meaning during these scanlines nothing is getting rendered on the screen.
-The PPU does essentially nothing. (It only sets up some flags, we will see what flags and when later on)
+These scanlines are not visible - meaning during these scanlines nothing is getting rendered on the screen;
+The essentially PPU does nothing. (It only sets up some flags, we will see what flags and when later on)
 During these scanlines the CPU can write data to VRAM to setup new data for the PPU to render next frame.
 
 > **_NOTE:_** This also explain why nothing is displayed during these scanlines - the whole point of having these scanlines is to have a time frame where the PPU isn't rendering or reading data so the CPU can safely update the data for the next frame.
@@ -104,14 +102,14 @@ The CPU **must** access VRAM and internal registers to set stuff for the next fr
 ### Pre-render scanline
 
 These scanlines are also not visible. Other than that, they are very similar to the visible scanlines. (with some other small changes)
-As can be inferred from it's name, it's purpose is to prepare the data for the visible scanlines to render.
+As can be inferred from their given name, their purpose is to prepare the data for the visible scanlines to render.
 
 ```
 NOTE:
 This also explain why nothing is displayed during this scanline - after the CPU updated the data, the PPU needs to make some internal fetches for the next scanline - the first visible scanline.
 ```
 
-I know this isn't really tangible yet and hard to understand, but things will hopefully make sense later on. Just keep what I said in mind, and if you need a reminder, you can always jump back and read this section again.
+I know this isn't really tangible yet and hard to understand, but things will hopefully make sense later on. Just keep what I said in mind and if you need a reminder you can always jump back and read this section again.
 
 ### In conclusion
 
@@ -192,7 +190,7 @@ When we place byte 9 on 0 we get:
 (00)(01)(00)(00)(00)(00)(00)(11)
 ```
 
-=> we get a 2 bit value!
+=> we get a 2 bit value!ELF Handling For Thread-Local Storage
 2 bit value means: `2^2 = 4` so 4 possible values: `0`,`1`,`2` and `3`.
 
 And remember, a tile is 8x8 pixels, so that means we get a 2 bit value for each pixel in the tile!

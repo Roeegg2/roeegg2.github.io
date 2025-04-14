@@ -2,7 +2,7 @@
 title: "The NES Internals Series: Chapter 4 - Game Cartrdiges & Mappers"
 series-name: "NES Internals"
 chapter: 4
-date: 2024-04-22 15:13:25 +0300
+date: 2023-04-22 15:13:25 +0300
 draft: false
 tags : ["nes", "emulation", "assembly"]
 ---
